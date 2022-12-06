@@ -84,7 +84,7 @@ see the [migration guide](MIGRATION_GUIDE.md) for detailed info.
       - [Features for Android only](#features-for-android-only)
         - [Move an entity to another album](#move-an-entity-to-another-album)
         - [Remove all non-exist entities](#remove-all-non-exist-entities)
-      - [Features for iOS only](#features-for-ios-only)
+      - [Features for iOS or macOS](#features-for-ios-or-macos)
         - [Create a folder](#create-a-folder)
         - [Create an album](#create-an-album)
         - [Remove the entity entry from the album](#remove-the-entity-entry-from-the-album)
@@ -153,9 +153,9 @@ On Android 10, **Scoped Storage** was introduced,
 which causes the origin resource file not directly
 inaccessible through it file path.
 
-If your `compileSdkVersion` is `29`, you can consider adding
-`android:requestLegacyExternalStorage="true"` to your
-`AndroidManifest.xml` in order to obtain resources:
+If your `compileSdkVersion` or `targetSdkVersion is `29`,
+you can consider adding `android:requestLegacyExternalStorage="true"`
+to your `AndroidManifest.xml` in order to obtain resources:
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -317,6 +317,16 @@ final File videoFile = File('path/to/your/video.mp4');
 final AssetEntity? videoEntity = await PhotoManager.editor.saveVideo(
   videoFile, // You can check whether the file is exist for better test coverage.
   title: 'write_your_own_title.mp4',
+);
+
+// [iOS only] Save a live photo from image and video `File`.
+// This only works when both image and video file were part of same live photo.
+final File imageFile = File('path/to/your/livephoto.heic');
+final File videoFile = File('path/to/your/livevideo.mp4');
+final AssetEntity? entity = await PhotoManager.editor.darwin.saveLivePhoto(
+  imageFile: imageFile,
+  videoFile: videoFile,
+  title: 'write_your_own_title.heic',
 );
 ```
 
@@ -535,7 +545,7 @@ rootProject.allprojects {
             resolutionStrategy.eachDependency { details ->
                 if (details.requested.group == 'com.github.bumptech.glide'
                         && details.requested.name.contains('glide')) {
-                    details.useVersion '4.11.0'
+                    details.useVersion '4.14.2'
                 }
             }
         }
@@ -683,12 +693,12 @@ Some operating systems will prompt confirmation dialogs
 for each entities' deletion, we have no way to avoid them.
 Make sure your customers accept repeatedly confirmations.
 
-#### Features for iOS only
+#### Features for iOS or macOS
 
 ##### Create a folder
 
 ```dart
-PhotoManager.editor.iOS.createFolder(
+PhotoManager.editor.darwin.createFolder(
   name,
   parent: parent, // Null, the root path or accessible folders.
 );
@@ -697,7 +707,7 @@ PhotoManager.editor.iOS.createFolder(
 ##### Create an album
 
 ```dart
-PhotoManager.editor.iOS.createAlbum(
+PhotoManager.editor.darwin.createAlbum(
   name,
   parent: parent, // Null, the root path or accessible folders.
 );
@@ -715,12 +725,12 @@ final AssetEntity entity = yourEntity;
 final List<AssetEntity> entities = <AssetEntity>[yourEntity, anotherEntity];
 // Remove single asset from the album.
 // It'll call the list method as the implementation.
-await PhotoManager.editor.iOS.removeInAlbum(
+await PhotoManager.editor.darwin.removeInAlbum(
   yourEntity,
   accessiblePath,
 );
 // Remove assets from the album in batches.
-await PhotoManager.editor.iOS.removeAssetsInAlbum(
+await PhotoManager.editor.darwin.removeAssetsInAlbum(
   entities,
   accessiblePath,
 );
@@ -731,7 +741,7 @@ await PhotoManager.editor.iOS.removeAssetsInAlbum(
 Smart albums can't be deleted.
 
 ```dart
-PhotoManager.editor.iOS.deletePath();
+PhotoManager.editor.darwin.deletePath();
 ```
 
 [pub package]: https://pub.dev/packages/photo_manager
@@ -740,8 +750,6 @@ PhotoManager.editor.iOS.deletePath();
 
 [Glide]: https://bumptech.github.io/glide/
 [Generated API]: https://bumptech.github.io/glide/doc/generatedapi.html
-
-[`ACCESS_MEDIA_LOCATION`]: https://developer.android.com/training/data-storage/shared/media#media-location-permission
 [MediaColumns.RELATIVE_PATH]: https://developer.android.com/reference/android/provider/MediaStore.MediaColumns#RELATIVE_PATH
 [PHAuthorizationStatus]: https://developer.apple.com/documentation/photokit/phauthorizationstatus?language=objc
 [PHCachingImageManager]: https://developer.apple.com/documentation/photokit/phcachingimagemanager?language=objc
