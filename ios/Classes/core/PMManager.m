@@ -525,7 +525,7 @@
         if (error) {
             NSLog(@"error = %@", error);
             [self notifyProgress:progressHandler progress:0 state:PMProgressStateFailed];
-            [handler reply:nil];
+            [handler replyError:error.description];
         } else {
             [handler reply:path];
             [self notifySuccess:progressHandler];
