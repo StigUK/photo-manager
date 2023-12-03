@@ -244,4 +244,8 @@ class PhotoManager {
       type: type,
     );
   }
+
+  static Future<bool> isLimitedPhotosPermission() {
+    return plugin.isLimitedPhotosPermission();
+  }
 }
