@@ -83,6 +83,11 @@ class PhotoManagerPlugin with BasePlugin, IosPlugin, AndroidPlugin {
     return PermissionState.values[result];
   }
 
+  Future<bool> isLimitedPhotosPermission() async {
+    dynamic value = await _channel.invokeMethod(PMConstants.isLimitedPhotosPermission);
+    return false;
+  }
+
   Future<int> getAssetCountFromPath(AssetPathEntity path) async {
     final int result = await _channel.invokeMethod<int>(
       PMConstants.mGetAssetCountFromPath,

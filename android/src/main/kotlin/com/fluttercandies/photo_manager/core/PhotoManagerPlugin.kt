@@ -257,6 +257,10 @@ class PhotoManagerPlugin(
                 val type = call.argument<Int>("type")!!
                 permissionsUtils.presentLimited(type, resultHandler)
             }
+
+            Methods.requestPermissionExtend -> {
+                permissionsUtils.isLimitedPhotosPermission()
+            }
         }
 
     }

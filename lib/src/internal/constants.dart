@@ -13,6 +13,7 @@ class PMConstants {
 
   /// Keys for [MethodCall]s.
   static const String mRequestPermissionExtend = 'requestPermissionExtend';
+  static const String isLimitedPhotosPermission = 'isLimitedPhotosPermission';
   static const String mPresentLimited = 'presentLimited';
   static const String mFetchEntityProperties = 'fetchEntityProperties';
   static const String mGetAssetCountFromPath = 'getAssetCountFromPath';

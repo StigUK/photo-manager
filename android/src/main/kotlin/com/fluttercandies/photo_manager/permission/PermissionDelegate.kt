@@ -145,6 +145,10 @@ abstract class PermissionDelegate {
         return false
     }
 
+    open fun isLimitedPhotosPermission(): Boolean {
+        return false
+    }
+
     open fun handlePermissionResult(
         permissionsUtils: PermissionsUtils,
         context: Context,

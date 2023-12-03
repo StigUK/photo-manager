@@ -27,11 +27,13 @@ class Methods {
         // About permission start
         const val requestPermissionExtend = "requestPermissionExtend"
         const val presentLimited = "presentLimited"
+        const val isLimitedPhotosPermission = "isLimitedPhotosPermission"
 
         fun isPermissionMethod(method: String): Boolean {
             return method in arrayOf(
                 requestPermissionExtend,
                 presentLimited,
+                isLimitedPhotosPermission,
             )
         }
         // About permission end

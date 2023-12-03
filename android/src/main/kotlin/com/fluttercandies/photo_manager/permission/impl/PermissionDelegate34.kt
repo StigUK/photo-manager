@@ -103,6 +103,10 @@ class PermissionDelegate34 : PermissionDelegate() {
 
     override fun isHandlePermissionResult() = true
 
+    override fun isLimitedPhotosPermission(): Boolean {
+        return havePermission(context, mediaVisualUserSelected)
+    }
+
     override fun handlePermissionResult(
         permissionsUtils: PermissionsUtils,
         context: Context,
